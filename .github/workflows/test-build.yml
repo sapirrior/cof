@@ -1,0 +1,33 @@
+name: Release Build cof
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Regex (=~) is not supported in GitHub Actions expressions. startsWith handles the check.
+    if: startsWith(github.ref, 'refs/tags/B')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install build essentials
+        run: sudo apt-get update && sudo apt-get install -y build-essential clang
+
+      - name: Build cof with clang
+        run: clang -Wall -Wextra -O2 src/cof.c src/utils/file.c -o cof_clang
+
+      - name: Build cof with gcc
+        run: gcc -Wall -Wextra -O2 src/cof.c src/utils/file.c -o cof_gcc
+
+      - name: Create example file
+        run: echo -e "Hello\nWorld" > example.txt
+
+      - name: Test cof_clang
+        run: ./cof_clang example.txt
+
+      - name: Test cof_gcc
+        run: ./cof_gcc example.txt
