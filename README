@@ -13,8 +13,9 @@ cof /path/to/file1 /path/to/file2
 ./cof /path/to/file1 /path/to/file2
 
 Compilation:
-clang main.c ./utils/file.c -o cof
-gcc main.c ./utils/file.c -o cof
+- clang main.c ./utils/file.c -o cof
+- gcc main.c ./utils/file.c -o cof
+- make
 
 Files:
 - cof.c — main program handling CLI arguments.
